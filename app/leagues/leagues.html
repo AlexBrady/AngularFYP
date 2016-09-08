@@ -1,0 +1,16 @@
+<table class="table table-hover">
+    <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Teams</th>
+        <th>Games</th>
+    </tr>
+    <tr ng-repeat="league in leagues" ng-click="showTable(league)">
+        <td>{{league.league}}</td>
+        <td>{{league.caption}}</td>
+        <td>{{league.numberOfTeams}}</td>
+        <td>{{league.numberOfGames}}</td>
+    </tr>
+</table>
+
+<p>{{errorMsg}}</p>
