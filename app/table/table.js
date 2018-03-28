@@ -53,4 +53,69 @@ angular.module('myApp.table', ['ngRoute'])
             }, function myError(response) {
                 $scope.errorMsg = response.statusText;
             });
-        }]);
+        }])
+
+    .controller('PlayerController', [ '$scope', '$http', '$routeParams', '$rootScope',
+        function ($scope, $http, $routeParams, $rootScope) {
+            $scope.players = [];
+            $rootScope.all_players = [];
+            $scope.selectedPlayers = [];
+            $scope.config = {
+                itemsPerPage: 5,
+                fillLastPage: true
+            };
+
+            $http({
+                method: 'GET',
+                url: 'http://178.62.31.229/get_players',
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                // Store response data
+                $scope.players = response.data;
+            });
+            $scope.AddPlayer = function(key) {
+                $scope.selectedPlayers.push(key);
+                console.log(key);
+                $rootScope.all_players = $scope.selectedPlayers
+            };
+            $scope.RemovePlayer = function(key) {
+                $scope.selectedPlayers.splice(key, 1);
+                console.log(key);
+                $rootScope.all_players = $scope.selectedPlayers
+            };
+            $scope.getPredictions = function() {
+                $rootScope.predictions = [];
+                angular.forEach($scope.selectedPlayers, function(value, key) {
+                    $http({
+                        method: 'GET',
+                        url: 'http://178.62.31.229/preds/' + value.id,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        // Store response data
+                        $rootScope.predictions.push(response.data);
+                        console.log(response)
+                    });
+                });
+
+            }}
+            ]
+    )
+
+    .controller('PredictController', [ '$scope', '$http', '$routeParams', '$rootScope',
+        function ($scope, $http, $routeParams, $rootScope) {
+            $scope.predictions = [];
+            var arrlength = $rootScope.all_players.length;
+            $scope.full_arr = $rootScope.all_players[arrlength - 1];
+            $scope.config = {
+                itemsPerPage: 5,
+                fillLastPage: true
+            };
+            $http({
+                method: 'GET',
+                url: 'http://178.62.31.229/midfielder/Salah',
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                // Store response data
+                $scope.predictions = response.data;
+            });
+        } ]);

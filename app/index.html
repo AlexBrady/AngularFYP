@@ -6,7 +6,6 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>dont b a wanka</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
@@ -30,18 +29,15 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Brand</a>
+        <a class="navbar-brand" href="#">Home</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="#!/table?leagueId=426">English Premier League</a></li>
-          <li><a href="#!/table?leagueId=430">Bundesliga</a></li>
-          <li><a href="#!/table?leagueId=438">Serie A</a></li>
-          <li><a href="#!/table?leagueId=436">Primera Division</a></li>
-          <li><a href="#!/table?leagueId=434">Ligue 1</a></li>
-          <li><a href="#!/leagues">More Leagues</a></li>
+          <li><a href="#!/table?leagueId=426">Predictions</a></li>
+          <li><a href="#!/table?leagueId=430">Fixtures/Tables</a></li>
+          <li><a href="#!/table?leagueId=438">Stats</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#">Sign In</a></li>
@@ -49,10 +45,6 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
-  <!-- Top Navigation End -->
-  <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  <![endif]-->
 
   <div ng-view></div>
 
@@ -61,7 +53,7 @@
   -->
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
-
+  <script src="dirPagination.js"></script>
   <script src="app.js"></script>
 
   <script src="leagues/leagues.js"></script>
