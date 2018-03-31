@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h3 class="modal-title">Player Information</h3>
+</div>
+<div class="modal-body">
+    <h4><strong>{{playerInfo.first_name}} {{playerInfo.web_name}}</strong></h4>
+    <p style="float: left">{{playerInfo.news}}</p>
+    <p style="float: right">Chance of playing next game: {{playerInfo.chance_of_playing_next_round}}%</p>
+    <table class="table">
+                      <tr>
+                          <th>Position</th>
+                          <th>Team</th>
+                          <th>Value</th>
+                          <th>Minutes Played</th>
+                          <th>Assists</th>
+                          <th>Goals</th>
+                          <th>Bonus</th>
+                          <th>ICT Index</th>
+                          <th>Clean Sheets</th>
+                          <th>Selected By(%)</th>
+                          <th>Total Points</th>
+                        </tr>
+                        <tr>
+                            <td>{{playerInfo.pos}}</td>
+                            <td>{{playerInfo.team_name}}</td>
+                            <td>{{playerInfo.now_cost / 10}}</td>
+                            <td>{{playerInfo.minutes}}</td>
+                            <td>{{playerInfo.assists}}</td>
+                            <td>{{playerInfo.goals_scored}}</td>
+                            <td>{{playerInfo.bonus}}</td>
+                            <td>{{playerInfo.ict_index}}</td>
+                            <td>{{playerInfo.clean_sheets}}</td>
+                            <td>{{playerInfo.selected_by_percent}}</td>
+                            <td>{{playerInfo.total_points}}</td>
+                        </tr>
+                    </table>
+</div>
+<div class="modal-footer">
+    <!--<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>-->
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

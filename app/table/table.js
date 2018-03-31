@@ -1,10 +1,7 @@
-/**
- * Created by mike on 2016-06-14.
- */
 
 'use strict';
 
-angular.module('myApp.table', ['ngRoute'])
+angular.module('myApp.table', ['ngRoute', 'ui.bootstrap', 'ngTable'])
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/table', {
@@ -55,24 +52,63 @@ angular.module('myApp.table', ['ngRoute'])
             });
         }])
 
-    .controller('PlayerController', [ '$scope', '$http', '$routeParams', '$rootScope',
-        function ($scope, $http, $routeParams, $rootScope) {
+    .controller('PlayerController', [ '$scope', '$http', '$routeParams', '$rootScope', '$uibModal', 'NgTableParams',
+        function ($scope, $http, $routeParams, $rootScope, $uibModal, NgTableParams) {
+            // $scope.filteredPlayers = []
+            //     ,$scope.currentPage = 1
+            //     ,$scope.numPerPage = 10
+            //     ,$scope.maxSize = 5;
+            // $scope.settings = {
+            //     currentPage: 0,
+            //     offset: 0,
+            //     pageLimit: 15,
+            //     pageLimits: ['10', '50', '100']
+            // };
+            var self = this;
+            $scope.positions = [{id: "", title: ""}, {id: 'Goalkeeper', title: 'Goalkeeper'}, {id: 'Defender', title: 'Defender'},
+                {id: 'Midfielder', title: 'Midfielder'}, {id: 'Forward', title: 'Forward'}];
+            $scope.team_names = [{id: "", title: ""}, {id: 'Arsenal', title: 'Arsenal'}, {id: 'Bournmouth', title: 'Bournmouth'},
+                {id: 'Brighton', title: 'Brighton'}, {id: 'Burnley', title: 'Burnley'}, {id: 'Chelsea', title: 'Chelsea'},
+                {id: 'Crystal Palace', title: 'Crystal Palace'}, {id: 'Everton', title: 'Everton'}, {id: 'Huddersfield', title: 'Huddersfield'}
+                , {id: 'Leicester', title: 'Leicester'}, {id: 'Liverpool', title: 'Liverpool'}, {id: 'Man City', title: 'Man City'}
+                , {id: 'Man United', title: 'Man United'}, {id: 'Newcastle', title: 'Newcastle'}
+                , {id: 'Southampton', title: 'Southampton'}, {id: 'Stoke', title: 'Stoke'}
+                , {id: 'Swansea', title: 'Swansea'}, {id: 'Spurs', title: 'Spurs'}
+                , {id: 'Watford', title: 'Watford'}, {id: 'West Brom', title: 'West Brom'}
+                , {id: 'West Ham', title: 'West Ham'}];
             $scope.players = [];
             $rootScope.all_players = [];
             $scope.selectedPlayers = [];
+            $scope.animationsEnabled = true;
             $scope.config = {
                 itemsPerPage: 5,
                 fillLastPage: true
             };
+            $scope.getPlayers = function () {
+                $http({
+                    method: 'GET',
+                    url: 'http://178.62.31.229/get_player_details',
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    // Store response data
+                    $scope.players = response.data;
+                    $scope.data = response.data;
+                    $scope.setPageInfo();
+                });
+            };
+            $scope.setPageInfo = function () {
 
-            $http({
-                method: 'GET',
-                url: 'http://178.62.31.229/get_players',
-                headers: {'Content-Type': 'application/json'}
-            }).then(function successCallback(response) {
-                // Store response data
-                $scope.players = response.data;
-            });
+                $scope.tableParams = new NgTableParams({}, {
+                    dataset: $scope.data
+                });
+            };
+            $scope.getPlayers();
+            // this.tableParams = new NgTableParams({
+            //     dataset: $scope.players
+            // });
+
+
+
             $scope.AddPlayer = function(key) {
                 $scope.selectedPlayers.push(key);
                 console.log(key);
@@ -86,36 +122,41 @@ angular.module('myApp.table', ['ngRoute'])
             $scope.getPredictions = function() {
                 $rootScope.predictions = [];
                 angular.forEach($scope.selectedPlayers, function(value, key) {
-                    $http({
-                        method: 'GET',
-                        url: 'http://178.62.31.229/preds/' + value.id,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        // Store response data
-                        $rootScope.predictions.push(response.data);
-                        console.log(response)
-                    });
+                        $http({
+                            method: 'GET',
+                            url: 'http://178.62.31.229/all_preds/' + value.player_id,
+                            headers: {'Content-Type': 'application/json'}
+                        }).then(function successCallback(response) {
+                            // Store response data
+                            $rootScope.predictions.push(response.data);
+                            console.log(response)
+                        });
                 });
-
-            }}
-            ]
-    )
-
-    .controller('PredictController', [ '$scope', '$http', '$routeParams', '$rootScope',
-        function ($scope, $http, $routeParams, $rootScope) {
-            $scope.predictions = [];
-            var arrlength = $rootScope.all_players.length;
-            $scope.full_arr = $rootScope.all_players[arrlength - 1];
-            $scope.config = {
-                itemsPerPage: 5,
-                fillLastPage: true
             };
-            $http({
-                method: 'GET',
-                url: 'http://178.62.31.229/midfielder/Salah',
-                headers: {'Content-Type': 'application/json'}
-            }).then(function successCallback(response) {
-                // Store response data
-                $scope.predictions = response.data;
-            });
+            $scope.openInfo = function (size, e, player) {
+                var modalInstance = $uibModal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'modal/playerModal.html',
+                    controller: 'ModalInstanceController',
+                    size: size,
+                    resolve: {
+                        Player: function () {
+                            return player;
+                        }
+                    }
+                });
+                modalInstance.then(function () {
+                    console.log('gowan son');
+                });
+                e.stopPropagation();
+            };
+
+    }])
+
+    .controller('ModalInstanceController', [ '$scope', '$uibModalInstance','Player',
+        function ($scope, $uibModalInstance, Player) {
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+            $scope.playerInfo = Player;
         } ]);
