@@ -10,6 +10,22 @@ angular.module('myApp').factory('AuthService',
                 logout: logout,
                 register: register
             });
+            
+            // function getUserStatus() {
+            //     return $http.get('http://127.0.0.1:5000/status/')
+            //     // handle success
+            //         .success(function (data) {
+            //             if(data.status){
+            //                 user = true;
+            //             } else {
+            //                 user = false;
+            //             }
+            //         })
+            //         // handle error
+            //         .error(function (data) {
+            //             user = false;
+            //         });
+            // }
 
             function isLoggedIn() {
                 if(user) {

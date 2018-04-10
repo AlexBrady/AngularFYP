@@ -1,7 +1,7 @@
 <div class="container" ng-app="myApp.signin" ng-controller="SigninController">
     <h2 class="form-signin-heading">Please sign in</h2>
     <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
-    <form name="signInForm"  ng-submit="signin()" >
+    <form name="signInForm"  ng-submit="getUser(); signin()" >
     <div class="form-group">
         <label>Username</label>
         <input name="username" class="form-control" ng-model="user.username" required>
